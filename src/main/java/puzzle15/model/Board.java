@@ -8,6 +8,7 @@ import java.util.TreeSet;
 public class Board {
 
     static final int BOARD_SIDE = 4;
+    private static final int EMPTY_TILE = 0;
     int [] array;
     //TODO: get max moves number from properties file
     private int movesNum = 50;
@@ -30,7 +31,7 @@ public class Board {
 
     public void slide(int tileValue) throws TileNotFoundException {
         if (movesNum > 0 && isLegalSlide(tileValue))    {
-            swapTiles(tileValue, 0);
+            swapTiles(tileValue, EMPTY_TILE);
             movesNum--;
         }
 
@@ -107,7 +108,7 @@ public class Board {
     boolean isLegalSlide(int value)  {
         int index = getIndex(value);
 
-        int index2 = getIndex(0);
+        int index2 = getIndex(EMPTY_TILE);
 
         boolean isLegal =  (Math.abs(index - index2) == BOARD_SIDE) ||
                 (Math.abs(index-index2) == 1 && Math.max(index, index2) % BOARD_SIDE > 0 );
