@@ -20,6 +20,48 @@ public class Board {
         return movesNum;
     }
 
+    public int [] getBoard()   {
+
+        int [] boardPresentation = new int [array.length];
+        System.arraycopy(array, 0, boardPresentation, 0, array.length);
+
+        return boardPresentation;
+    }
+
+    public void slide(int tileValue) throws TileNotFoundException {
+        if (movesNum > 0 && isLegalSlide(tileValue))    {
+            swapTiles(tileValue, 0);
+            movesNum--;
+        }
+
+    }
+
+    private void swapTiles(int value, int value2) throws TileNotFoundException {
+
+        int index2 = getIndex(value2);
+        int index = findValueAndUpdate(value, value2);
+        if (index == -1 || index2 == -1)    {
+            throw new TileNotFoundException("no tile with value "+value+" found");
+        }
+        array[index2] = value;
+
+    }
+
+    public boolean isWin()  {
+
+        for (int i=0; i< array.length-1; i++)  {
+            if ( array[i] != i+1 )  {
+                if (getMovesNum() == 0) {
+                    System.out.println("You loose!");
+                }
+                return false;
+            }
+        }
+
+        System.out.println("Congratulations, you win!");
+        return true;
+    }
+
     /** init with random  numbers,
      *      then map the smallest one to 0,
      *      the next one to 1 and so on until the board is full
@@ -57,65 +99,6 @@ public class Board {
     }
 
     /**
-     * @param valueToUpdate
-     * @param newValue
-     * @return the updated index; if the value not found returns -1
-     */
-    private int findValueAndUpdate(Integer valueToUpdate, int newValue) {
-        for (int j=0; j< array.length; j++) {
-            if (array[j] == valueToUpdate ) {
-                array[j] = newValue;
-                return j;
-            }
-        }
-
-        return -1;
-    }
-
-
-    public int [] getBoard()   {
-
-        int [] boardPresentation = new int [array.length];
-        System.arraycopy(array, 0, boardPresentation, 0, array.length);
-
-        return boardPresentation;
-    }
-
-    public void slide(int tileValue) throws TileNotFoundException {
-        //TODO: make sure movesNUm >0
-        if (isLegalSlide(tileValue))    {
-            swapTiles(tileValue, 0);
-            movesNum--;
-        }
-
-    }
-
-    private void swapTiles(int value, int value2) throws TileNotFoundException {
-
-        int index = findValueAndUpdate(value, value2);
-        if (index == -1)    {
-            throw new TileNotFoundException("no tile with value "+value+" found");
-        }
-        array[getIndex(value2)] = value;
-
-    }
-
-    public boolean isWin()  {
-
-        for (int i=0; i< array.length-1; i++)  {
-            if ( array[i] != i+1 )  {
-                if (getMovesNum() == 0) {
-                    System.out.println("You loose!");
-                }
-                return false;
-            }
-        }
-
-        System.out.println("Congratulations, you win!");
-        return true;
-    }
-
-    /**
      * slide is legal if tiles are next to each other,
      * at the same column or at the same line
      * @param value
@@ -136,6 +119,14 @@ public class Board {
         return isLegal;
     }
 
+    /**
+     * for testing purposes only
+     * @param arrayToCopy
+     */
+    void setBoard(int [] arrayToCopy) {
+        System.arraycopy(arrayToCopy, 0, array, 0, array.length);
+    }
+
     private int getIndex(int value) {
         int index = -1;
         for (int i=0; i<array.length; i++)  {
@@ -145,6 +136,22 @@ public class Board {
             }
         }
         return index;
+    }
+
+    /**
+     * @param valueToUpdate
+     * @param newValue
+     * @return the updated index; if the value not found returns -1
+     */
+    private int findValueAndUpdate(Integer valueToUpdate, int newValue) {
+        for (int j=0; j< array.length; j++) {
+            if (array[j] == valueToUpdate ) {
+                array[j] = newValue;
+                return j;
+            }
+        }
+
+        return -1;
     }
 
 }
