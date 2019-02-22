@@ -104,6 +104,9 @@ public class Board {
 
         for (int i=0; i< array.length-1; i++)  {
             if ( array[i] != i+1 )  {
+                if (getMovesNum() == 0) {
+                    System.out.println("You loose!");
+                }
                 return false;
             }
         }

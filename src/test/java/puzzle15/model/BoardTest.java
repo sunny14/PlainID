@@ -39,7 +39,7 @@ public class BoardTest {
 
     //TODO: test a legal slide
     @Test
-    public void movesLimitTest()    {
+    public void legalSlideTest()    {
         //TODO
     }
 }
